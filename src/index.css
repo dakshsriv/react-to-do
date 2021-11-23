@@ -14,9 +14,19 @@ body {
     text-align: center;
     font-size: 20px;
     padding: 2.5%;
-    font-family: "RobotoCondensed" /* Specify font */
+    font-family: "RobotoCondensed"; /* Specify font */
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: "EconomicaBold" /* Specify font */
+    font-family: "EconomicaBold"; /* Specify font */
+}
+
+.listEntry {
+    border: 3px solid rgb(255, 146, 4);
+    padding: 5px;
+    margin: 10px;
+    font-size: 17px;
+    text-align: left;
+    width: 50%;
+    font-family: "RobotoCOndensed"; 
 }
