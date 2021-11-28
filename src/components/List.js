@@ -13,6 +13,7 @@ class List extends Component {
 
     createEntry = props => {
         const id = uuidv4();
+        
 
         // Output: (Text, Time, UUID)
     }

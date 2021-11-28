@@ -35581,6 +35581,8 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _reactRouterDom = require("react-router-dom");
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -35630,7 +35632,7 @@ var Create = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "updateNewEntry", function (event) {
-      console.log('event', event);
+      console.log('event.target.value', event.target.value);
     });
 
     return _this;
@@ -35639,10 +35641,14 @@ var Create = /*#__PURE__*/function (_Component) {
   _createClass(Create, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
-        onChange: this.updateNewEntry,
-        placeholder: "Enter your note here"
-      }), /*#__PURE__*/_react.default.createElement("button", null, "Submit"));
+      return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Create a note here"), /*#__PURE__*/_react.default.createElement("hr", null), /*#__PURE__*/_react.default.createElement("textarea", {
+        rows: 7,
+        cols: 90,
+        value: this.state.newEntry,
+        onChange: this.updateNewEntry
+      }, "Enter your note here"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+        to: "/"
+      }, /*#__PURE__*/_react.default.createElement("button", null, "Cancel")), /*#__PURE__*/_react.default.createElement("button", null, "Create"));
     }
   }]);
 
@@ -35651,7 +35657,7 @@ var Create = /*#__PURE__*/function (_Component) {
 
 var _default = Create;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/es/index.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -35723,7 +35729,549 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./assets/roboto-condensed.light.ttf":[["roboto-condensed.light.6709adf4.ttf","assets/roboto-condensed.light.ttf"],"assets/roboto-condensed.light.ttf"],"./assets/economica-bold.ttf":[["economica-bold.12a9e27d.ttf","assets/economica-bold.ttf"],"assets/economica-bold.ttf"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+},{"./assets/roboto-condensed.light.ttf":[["roboto-condensed.light.6709adf4.ttf","assets/roboto-condensed.light.ttf"],"assets/roboto-condensed.light.ttf"],"./assets/economica-bold.ttf":[["economica-bold.12a9e27d.ttf","assets/economica-bold.ttf"],"assets/economica-bold.ttf"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/history/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Action = void 0;
+exports.createBrowserHistory = createBrowserHistory;
+exports.createHashHistory = createHashHistory;
+exports.createMemoryHistory = createMemoryHistory;
+exports.createPath = I;
+exports.parsePath = J;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var r,
+    B = r || (exports.Action = r = {});
+exports.Action = r;
+B.Pop = "POP";
+B.Push = "PUSH";
+B.Replace = "REPLACE";
+var C = "production" !== "development" ? function (b) {
+  return Object.freeze(b);
+} : function (b) {
+  return b;
+};
+
+function D(b, h) {
+  if (!b) {
+    "undefined" !== typeof console && console.warn(h);
+
+    try {
+      throw Error(h);
+    } catch (k) {}
+  }
+}
+
+function E(b) {
+  b.preventDefault();
+  b.returnValue = "";
+}
+
+function F() {
+  var b = [];
+  return {
+    get length() {
+      return b.length;
+    },
+
+    push: function (h) {
+      b.push(h);
+      return function () {
+        b = b.filter(function (k) {
+          return k !== h;
+        });
+      };
+    },
+    call: function (h) {
+      b.forEach(function (k) {
+        return k && k(h);
+      });
+    }
+  };
+}
+
+function H() {
+  return Math.random().toString(36).substr(2, 8);
+}
+
+function I(b) {
+  var h = b.pathname,
+      k = b.search;
+  b = b.hash;
+  return (void 0 === h ? "/" : h) + (void 0 === k ? "" : k) + (void 0 === b ? "" : b);
+}
+
+function J(b) {
+  var h = {};
+
+  if (b) {
+    var k = b.indexOf("#");
+    0 <= k && (h.hash = b.substr(k), b = b.substr(0, k));
+    k = b.indexOf("?");
+    0 <= k && (h.search = b.substr(k), b = b.substr(0, k));
+    b && (h.pathname = b);
+  }
+
+  return h;
+}
+
+function createBrowserHistory(b) {
+  function h() {
+    var c = p.location,
+        a = m.state || {};
+    return [a.idx, C({
+      pathname: c.pathname,
+      search: c.search,
+      hash: c.hash,
+      state: a.usr || null,
+      key: a.key || "default"
+    })];
+  }
+
+  function k(c) {
+    return "string" === typeof c ? c : I(c);
+  }
+
+  function x(c, a) {
+    void 0 === a && (a = null);
+    return C((0, _extends2.default)({
+      pathname: q.pathname,
+      hash: "",
+      search: ""
+    }, "string" === typeof c ? J(c) : c, {
+      state: a,
+      key: H()
+    }));
+  }
+
+  function z(c) {
+    t = c;
+    c = h();
+    v = c[0];
+    q = c[1];
+    d.call({
+      action: t,
+      location: q
+    });
+  }
+
+  function A(c, a) {
+    function e() {
+      A(c, a);
+    }
+
+    var l = r.Push,
+        g = x(c, a);
+
+    if (!f.length || (f.call({
+      action: l,
+      location: g,
+      retry: e
+    }), !1)) {
+      var n = [{
+        usr: g.state,
+        key: g.key,
+        idx: v + 1
+      }, k(g)];
+      g = n[0];
+      n = n[1];
+
+      try {
+        m.pushState(g, "", n);
+      } catch (G) {
+        p.location.assign(n);
+      }
+
+      z(l);
+    }
+  }
+
+  function y(c, a) {
+    function e() {
+      y(c, a);
+    }
+
+    var l = r.Replace,
+        g = x(c, a);
+    f.length && (f.call({
+      action: l,
+      location: g,
+      retry: e
+    }), 1) || (g = [{
+      usr: g.state,
+      key: g.key,
+      idx: v
+    }, k(g)], m.replaceState(g[0], "", g[1]), z(l));
+  }
+
+  function w(c) {
+    m.go(c);
+  }
+
+  void 0 === b && (b = {});
+  b = b.window;
+  var p = void 0 === b ? document.defaultView : b,
+      m = p.history,
+      u = null;
+  p.addEventListener("popstate", function () {
+    if (u) f.call(u), u = null;else {
+      var c = r.Pop,
+          a = h(),
+          e = a[0];
+      a = a[1];
+      if (f.length) {
+        if (null != e) {
+          var l = v - e;
+          l && (u = {
+            action: c,
+            location: a,
+            retry: function () {
+              w(-1 * l);
+            }
+          }, w(l));
+        } else "production" !== "development" ? D(!1, "You are trying to block a POP navigation to a location that was not created by the history library. The block will fail silently in production, but in general you should do all navigation with the history library (instead of using window.history.pushState directly) to avoid this situation.") : void 0;
+      } else z(c);
+    }
+  });
+  var t = r.Pop;
+  b = h();
+  var v = b[0],
+      q = b[1],
+      d = F(),
+      f = F();
+  null == v && (v = 0, m.replaceState((0, _extends2.default)({}, m.state, {
+    idx: v
+  }), ""));
+  return {
+    get action() {
+      return t;
+    },
+
+    get location() {
+      return q;
+    },
+
+    createHref: k,
+    push: A,
+    replace: y,
+    go: w,
+    back: function () {
+      w(-1);
+    },
+    forward: function () {
+      w(1);
+    },
+    listen: function (c) {
+      return d.push(c);
+    },
+    block: function (c) {
+      var a = f.push(c);
+      1 === f.length && p.addEventListener("beforeunload", E);
+      return function () {
+        a();
+        f.length || p.removeEventListener("beforeunload", E);
+      };
+    }
+  };
+}
+
+;
+
+function createHashHistory(b) {
+  function h() {
+    var a = J(m.location.hash.substr(1)),
+        e = a.pathname,
+        l = a.search;
+    a = a.hash;
+    var g = u.state || {};
+    return [g.idx, C({
+      pathname: void 0 === e ? "/" : e,
+      search: void 0 === l ? "" : l,
+      hash: void 0 === a ? "" : a,
+      state: g.usr || null,
+      key: g.key || "default"
+    })];
+  }
+
+  function k() {
+    if (t) c.call(t), t = null;else {
+      var a = r.Pop,
+          e = h(),
+          l = e[0];
+      e = e[1];
+      if (c.length) {
+        if (null != l) {
+          var g = q - l;
+          g && (t = {
+            action: a,
+            location: e,
+            retry: function () {
+              p(-1 * g);
+            }
+          }, p(g));
+        } else "production" !== "development" ? D(!1, "You are trying to block a POP navigation to a location that was not created by the history library. The block will fail silently in production, but in general you should do all navigation with the history library (instead of using window.history.pushState directly) to avoid this situation.") : void 0;
+      } else A(a);
+    }
+  }
+
+  function x(a) {
+    var e = document.querySelector("base"),
+        l = "";
+    e && e.getAttribute("href") && (e = m.location.href, l = e.indexOf("#"), l = -1 === l ? e : e.slice(0, l));
+    return l + "#" + ("string" === typeof a ? a : I(a));
+  }
+
+  function z(a, e) {
+    void 0 === e && (e = null);
+    return C((0, _extends2.default)({
+      pathname: d.pathname,
+      hash: "",
+      search: ""
+    }, "string" === typeof a ? J(a) : a, {
+      state: e,
+      key: H()
+    }));
+  }
+
+  function A(a) {
+    v = a;
+    a = h();
+    q = a[0];
+    d = a[1];
+    f.call({
+      action: v,
+      location: d
+    });
+  }
+
+  function y(a, e) {
+    function l() {
+      y(a, e);
+    }
+
+    var g = r.Push,
+        n = z(a, e);
+    "production" !== "development" ? D("/" === n.pathname.charAt(0), "Relative pathnames are not supported in hash history.push(" + JSON.stringify(a) + ")") : void 0;
+
+    if (!c.length || (c.call({
+      action: g,
+      location: n,
+      retry: l
+    }), !1)) {
+      var G = [{
+        usr: n.state,
+        key: n.key,
+        idx: q + 1
+      }, x(n)];
+      n = G[0];
+      G = G[1];
+
+      try {
+        u.pushState(n, "", G);
+      } catch (K) {
+        m.location.assign(G);
+      }
+
+      A(g);
+    }
+  }
+
+  function w(a, e) {
+    function l() {
+      w(a, e);
+    }
+
+    var g = r.Replace,
+        n = z(a, e);
+    "production" !== "development" ? D("/" === n.pathname.charAt(0), "Relative pathnames are not supported in hash history.replace(" + JSON.stringify(a) + ")") : void 0;
+    c.length && (c.call({
+      action: g,
+      location: n,
+      retry: l
+    }), 1) || (n = [{
+      usr: n.state,
+      key: n.key,
+      idx: q
+    }, x(n)], u.replaceState(n[0], "", n[1]), A(g));
+  }
+
+  function p(a) {
+    u.go(a);
+  }
+
+  void 0 === b && (b = {});
+  b = b.window;
+  var m = void 0 === b ? document.defaultView : b,
+      u = m.history,
+      t = null;
+  m.addEventListener("popstate", k);
+  m.addEventListener("hashchange", function () {
+    var a = h()[1];
+    I(a) !== I(d) && k();
+  });
+  var v = r.Pop;
+  b = h();
+  var q = b[0],
+      d = b[1],
+      f = F(),
+      c = F();
+  null == q && (q = 0, u.replaceState((0, _extends2.default)({}, u.state, {
+    idx: q
+  }), ""));
+  return {
+    get action() {
+      return v;
+    },
+
+    get location() {
+      return d;
+    },
+
+    createHref: x,
+    push: y,
+    replace: w,
+    go: p,
+    back: function () {
+      p(-1);
+    },
+    forward: function () {
+      p(1);
+    },
+    listen: function (a) {
+      return f.push(a);
+    },
+    block: function (a) {
+      var e = c.push(a);
+      1 === c.length && m.addEventListener("beforeunload", E);
+      return function () {
+        e();
+        c.length || m.removeEventListener("beforeunload", E);
+      };
+    }
+  };
+}
+
+;
+
+function createMemoryHistory(b) {
+  function h(d, f) {
+    void 0 === f && (f = null);
+    return C((0, _extends2.default)({
+      pathname: t.pathname,
+      search: "",
+      hash: ""
+    }, "string" === typeof d ? J(d) : d, {
+      state: f,
+      key: H()
+    }));
+  }
+
+  function k(d, f, c) {
+    return !q.length || (q.call({
+      action: d,
+      location: f,
+      retry: c
+    }), !1);
+  }
+
+  function x(d, f) {
+    u = d;
+    t = f;
+    v.call({
+      action: u,
+      location: t
+    });
+  }
+
+  function z(d, f) {
+    var c = r.Push,
+        a = h(d, f);
+    "production" !== "development" ? D("/" === t.pathname.charAt(0), "Relative pathnames are not supported in memory history.push(" + JSON.stringify(d) + ")") : void 0;
+    k(c, a, function () {
+      z(d, f);
+    }) && (m += 1, p.splice(m, p.length, a), x(c, a));
+  }
+
+  function A(d, f) {
+    var c = r.Replace,
+        a = h(d, f);
+    "production" !== "development" ? D("/" === t.pathname.charAt(0), "Relative pathnames are not supported in memory history.replace(" + JSON.stringify(d) + ")") : void 0;
+    k(c, a, function () {
+      A(d, f);
+    }) && (p[m] = a, x(c, a));
+  }
+
+  function y(d) {
+    var f = Math.min(Math.max(m + d, 0), p.length - 1),
+        c = r.Pop,
+        a = p[f];
+    k(c, a, function () {
+      y(d);
+    }) && (m = f, x(c, a));
+  }
+
+  void 0 === b && (b = {});
+  var w = b;
+  b = w.initialEntries;
+  w = w.initialIndex;
+  var p = (void 0 === b ? ["/"] : b).map(function (d) {
+    var f = C((0, _extends2.default)({
+      pathname: "/",
+      search: "",
+      hash: "",
+      state: null,
+      key: H()
+    }, "string" === typeof d ? J(d) : d));
+    "production" !== "development" ? D("/" === f.pathname.charAt(0), "Relative pathnames are not supported in createMemoryHistory({ initialEntries }) (invalid entry: " + JSON.stringify(d) + ")") : void 0;
+    return f;
+  }),
+      m = Math.min(Math.max(null == w ? p.length - 1 : w, 0), p.length - 1),
+      u = r.Pop,
+      t = p[m],
+      v = F(),
+      q = F();
+  return {
+    get index() {
+      return m;
+    },
+
+    get action() {
+      return u;
+    },
+
+    get location() {
+      return t;
+    },
+
+    createHref: function (d) {
+      return "string" === typeof d ? d : I(d);
+    },
+    push: z,
+    replace: A,
+    go: y,
+    back: function () {
+      y(-1);
+    },
+    forward: function () {
+      y(1);
+    },
+    listen: function (d) {
+      return v.push(d);
+    },
+    block: function (d) {
+      return q.push(d);
+    }
+  };
+}
+
+;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -35738,11 +36286,16 @@ require("./index.css");
 
 var _reactRouterDom = require("react-router-dom");
 
+var _history = require("history");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // <-- LINK STYLESHEET IN THIS FILE
-//import createBrowserHistory from 'history/createBrowserHistory';
-_reactDom.default.render( /*#__PURE__*/_react.default.createElement(_reactRouterDom.Router, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Switch, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+var history = (0, _history.createBrowserHistory)(); //import createBrowserHistory from 'history/createBrowserHistory';
+
+_reactDom.default.render( /*#__PURE__*/_react.default.createElement(_reactRouterDom.Router, {
+  history: history
+}, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Switch, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
   exact: true,
   path: "/",
   component: _App.default
@@ -35750,7 +36303,7 @@ _reactDom.default.render( /*#__PURE__*/_react.default.createElement(_reactRouter
   path: "/create",
   component: _Create.default
 }))), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./components/App":"components/App.js","./components/Create":"components/Create.js","./index.css":"index.css","react-router-dom":"../node_modules/react-router-dom/es/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./components/App":"components/App.js","./components/Create":"components/Create.js","./index.css":"index.css","react-router-dom":"../node_modules/react-router-dom/es/index.js","history":"../node_modules/history/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -35778,7 +36331,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36009" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39737" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

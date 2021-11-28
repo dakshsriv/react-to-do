@@ -8,7 +8,10 @@
     "build": "parcel build src/index.html",
     "start": "npm run build && live-server dist"
   },
-  "keywords": ["to-do", "react"],
+  "keywords": [
+    "to-do",
+    "react"
+  ],
   "author": "Daksh Srivastava",
   "license": "ISC",
   "dependencies": {
