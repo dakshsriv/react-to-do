@@ -15,6 +15,11 @@ class Create extends Component {
         event.preventDefault();
     }
 
+    nullify = () => {
+        this.setState({newEntry: ""});
+        this.onTrigger();
+    }
+
     render() {
         return (
             <div>
@@ -29,7 +34,7 @@ class Create extends Component {
                     </label>
                     <input type="submit" value="Submit" />
                     <div style={{display: 'inline-block'}}>
-                        <button>Cancel</button>
+                        <button onClick={this.nullify}>Cancel</button>
                     </div>
                 </form>
                 

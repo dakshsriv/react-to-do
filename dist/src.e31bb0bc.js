@@ -35469,6 +35469,14 @@ var Create = /*#__PURE__*/function (_Component) {
       event.preventDefault();
     });
 
+    _defineProperty(_assertThisInitialized(_this), "nullify", function () {
+      _this.setState({
+        newEntry: ""
+      });
+
+      _this.onTrigger();
+    });
+
     return _this;
   }
 
@@ -35488,7 +35496,9 @@ var Create = /*#__PURE__*/function (_Component) {
         style: {
           display: 'inline-block'
         }
-      }, /*#__PURE__*/_react.default.createElement("button", null, "Cancel"))));
+      }, /*#__PURE__*/_react.default.createElement("button", {
+        onClick: this.nullify
+      }, "Cancel"))));
     }
   }]);
 
@@ -35594,6 +35604,12 @@ var List = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "addEntryToState", function (data) {
+      if (data == "") {
+        _this.toggleIsCreate();
+
+        return 0;
+      }
+
       var id = (0, _uuid.v4)();
       var today = new Date();
       var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -36378,7 +36394,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39979" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36029" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

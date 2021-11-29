@@ -23,6 +23,7 @@ h1, h2, h3, h4, h5 {
 
 .listEntry {
     border: 3px solid rgb(255, 146, 4);
+    border-radius: 25px;
     padding: 5px;
     margin: 10px;
     font-size: 17px;

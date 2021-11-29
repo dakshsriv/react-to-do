@@ -17,6 +17,10 @@ class List extends Component {
     }
 
     addEntryToState = (data) => {
+        if (data == "") {
+            this.toggleIsCreate();
+            return(0);
+        }
         const id = uuidv4();
         var today = new Date();
         var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
