@@ -35454,6 +35454,7 @@ var Create = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "updateNewEntry", function (event) {
+      console.log("updateNewEntry has been triggered");
       console.log('event.target.value', event.target.value);
 
       _this.setState({
@@ -35465,16 +35466,10 @@ var Create = /*#__PURE__*/function (_Component) {
       console.log(_this.state.newEntry);
 
       _this.props.parentCallback(_this.state.newEntry);
-
-      event.preventDefault();
     });
 
-    _defineProperty(_assertThisInitialized(_this), "nullify", function () {
-      _this.setState({
-        newEntry: ""
-      });
-
-      _this.onTrigger();
+    _defineProperty(_assertThisInitialized(_this), "cancelEntry", function () {
+      _this.props.parentCallback("");
     });
 
     return _this;
@@ -35488,16 +35483,20 @@ var Create = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/_react.default.createElement("label", null, "Name:", /*#__PURE__*/_react.default.createElement("textarea", {
         rows: 7,
         cols: 90,
+        value: this.state.newEntry,
         onChange: this.updateNewEntry
       }, "Enter your note here")), /*#__PURE__*/_react.default.createElement("input", {
         type: "submit",
         value: "Submit"
+      }), /*#__PURE__*/_react.default.createElement("input", {
+        type: "reset",
+        value: "Resset"
       }), /*#__PURE__*/_react.default.createElement("div", {
         style: {
           display: 'inline-block'
         }
       }, /*#__PURE__*/_react.default.createElement("button", {
-        onClick: this.nullify
+        onClick: this.cancelEntry
       }, "Cancel"))));
     }
   }]);
@@ -35570,19 +35569,7 @@ var List = /*#__PURE__*/function (_Component) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
-      entries: [{
-        text: "Hello",
-        timeCreation: "4:00",
-        timeDue: "5:00"
-      }, {
-        text: "How are you?",
-        timeCreation: "4:01",
-        timeDue: "5:13"
-      }, {
-        text: "I'm good",
-        timeCreation: "4:02",
-        timeDue: "4:49"
-      }],
+      entries: [],
       isCreate: false
     });
 
@@ -35639,7 +35626,9 @@ var List = /*#__PURE__*/function (_Component) {
 
       // console.log(Checkbox)
       // console.log((this.state.entries).map(entry => {this.mkJSX(entry)}))
-      return /*#__PURE__*/_react.default.createElement("div", null, this.state.isCreate ? /*#__PURE__*/_react.default.createElement(_Create.default, {
+      return /*#__PURE__*/_react.default.createElement("div", {
+        className: "listBox"
+      }, this.state.isCreate ? /*#__PURE__*/_react.default.createElement(_Create.default, {
         parentCallback: this.addEntryToState
       }) : /*#__PURE__*/_react.default.createElement("div", null, this.state.entries.map(function (entry) {
         return /*#__PURE__*/_react.default.createElement(_this2.Mkjsx, {
@@ -36394,7 +36383,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36029" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36317" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

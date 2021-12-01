@@ -5,6 +5,7 @@ class Create extends Component {
     state = { newEntry: ""};
 
     updateNewEntry = event => {
+        console.log("updateNewEntry has been triggered");
         console.log('event.target.value', event.target.value);
         this.setState({newEntry: event.target.value});
     }
@@ -12,12 +13,10 @@ class Create extends Component {
     onTrigger = (event) => {
         console.log(this.state.newEntry);
         this.props.parentCallback(this.state.newEntry);
-        event.preventDefault();
-    }
+        }
 
-    nullify = () => {
-        this.setState({newEntry: ""});
-        this.onTrigger();
+    cancelEntry = () => {
+        this.props.parentCallback("");
     }
 
     render() {
@@ -28,13 +27,14 @@ class Create extends Component {
                 <form onSubmit={this.onTrigger}>
                     <label>
                         Name:
-                        <textarea rows={7} cols={90} onChange={this.updateNewEntry}>
+                        <textarea rows={7} cols={90} value={this.state.newEntry} onChange={this.updateNewEntry}>
                         Enter your note here
                         </textarea>
                     </label>
                     <input type="submit" value="Submit" />
+                    <input type="reset" value="Reset" /> 
                     <div style={{display: 'inline-block'}}>
-                        <button onClick={this.nullify}>Cancel</button>
+                        <button onClick={this.cancelEntry}>Cancel</button>
                     </div>
                 </form>
                 

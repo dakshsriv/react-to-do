@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Create from './Create';
 
 class List extends Component {
-    state = { entries: [{text: "Hello",  timeCreation: "4:00", timeDue: "5:00"}, {text: "How are you?",  timeCreation: "4:01", timeDue: "5:13"}, {text: "I'm good",  timeCreation: "4:02", timeDue: "4:49"}], isCreate: false};
+    state = { entries: [], isCreate: false};
 
     Mkjsx = props => {
         //console.log(props);
@@ -31,11 +31,12 @@ class List extends Component {
         this.setState({entries: oldValues});
         this.toggleIsCreate();
     }
+
     render() {
         // console.log(Checkbox)
         // console.log((this.state.entries).map(entry => {this.mkJSX(entry)}))
         return (
-            <div>
+            <div className="listBox">
 
                 {this.state.isCreate ? (<Create parentCallback = {this.addEntryToState}/>)
                  : (<div>{(this.state.entries).map(entry => (<this.Mkjsx entry={entry}/>))}
