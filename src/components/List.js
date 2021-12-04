@@ -14,6 +14,7 @@ class List extends Component {
 
     toggleIsCreate = () => {
         this.setState({isCreate : !this.state.isCreate});
+        console.log(this.state.isCreate);
     }
 
     addEntryToState = (data) => {
@@ -36,13 +37,17 @@ class List extends Component {
         // console.log(Checkbox)
         // console.log((this.state.entries).map(entry => {this.mkJSX(entry)}))
         return (
-            <div className="listBox">
-
+            <div>
                 {this.state.isCreate ? (<Create parentCallback = {this.addEntryToState}/>)
-                 : (<div>{(this.state.entries).map(entry => (<this.Mkjsx entry={entry}/>))}
+                 : (
+                <div>
+                <h1>Welcome to your to-do list!</h1>
+                <hr/>
+                 <div className="listBox">
+                    {(this.state.entries).map(entry => (<this.Mkjsx entry={entry}/>))}
                     <button onClick={this.toggleIsCreate}>Create a new task</button>
+                    </div>
                     </div>) }
-                
             </div>
         )
     }

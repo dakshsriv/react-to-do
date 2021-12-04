@@ -35480,24 +35480,21 @@ var Create = /*#__PURE__*/function (_Component) {
     value: function render() {
       return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Create a note here"), /*#__PURE__*/_react.default.createElement("hr", null), /*#__PURE__*/_react.default.createElement("form", {
         onSubmit: this.onTrigger
-      }, /*#__PURE__*/_react.default.createElement("label", null, "Name:", /*#__PURE__*/_react.default.createElement("textarea", {
+      }, /*#__PURE__*/_react.default.createElement("label", null, /*#__PURE__*/_react.default.createElement("textarea", {
         rows: 7,
         cols: 90,
         value: this.state.newEntry,
         onChange: this.updateNewEntry
-      }, "Enter your note here")), /*#__PURE__*/_react.default.createElement("input", {
+      }, "Enter your note here")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
         type: "submit",
         value: "Submit"
-      }), /*#__PURE__*/_react.default.createElement("input", {
-        type: "reset",
-        value: "Resset"
       }), /*#__PURE__*/_react.default.createElement("div", {
         style: {
           display: 'inline-block'
         }
       }, /*#__PURE__*/_react.default.createElement("button", {
         onClick: this.cancelEntry
-      }, "Cancel"))));
+      }, "Cancel")))));
     }
   }]);
 
@@ -35588,6 +35585,8 @@ var List = /*#__PURE__*/function (_Component) {
       _this.setState({
         isCreate: !_this.state.isCreate
       });
+
+      console.log(_this.state.isCreate);
     });
 
     _defineProperty(_assertThisInitialized(_this), "addEntryToState", function (data) {
@@ -35626,17 +35625,17 @@ var List = /*#__PURE__*/function (_Component) {
 
       // console.log(Checkbox)
       // console.log((this.state.entries).map(entry => {this.mkJSX(entry)}))
-      return /*#__PURE__*/_react.default.createElement("div", {
-        className: "listBox"
-      }, this.state.isCreate ? /*#__PURE__*/_react.default.createElement(_Create.default, {
+      return /*#__PURE__*/_react.default.createElement("div", null, this.state.isCreate ? /*#__PURE__*/_react.default.createElement(_Create.default, {
         parentCallback: this.addEntryToState
-      }) : /*#__PURE__*/_react.default.createElement("div", null, this.state.entries.map(function (entry) {
+      }) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Welcome to your to-do list!"), /*#__PURE__*/_react.default.createElement("hr", null), /*#__PURE__*/_react.default.createElement("div", {
+        className: "listBox"
+      }, this.state.entries.map(function (entry) {
         return /*#__PURE__*/_react.default.createElement(_this2.Mkjsx, {
           entry: entry
         });
       }), /*#__PURE__*/_react.default.createElement("button", {
         onClick: this.toggleIsCreate
-      }, "Create a new task")));
+      }, "Create a new task"))));
     }
   }]);
 
@@ -35700,7 +35699,7 @@ var App = /*#__PURE__*/function (_Component) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Welcome to your to-do list!"), /*#__PURE__*/_react.default.createElement("hr", null), /*#__PURE__*/_react.default.createElement(_List.default, null));
+      return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_List.default, null));
     }
   }]);
 
@@ -36383,7 +36382,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36317" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41499" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

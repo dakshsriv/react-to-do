@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
-class Create extends Component {
+class EntryBox extends Component {
     state = { newEntry: ""};
 
     updateNewEntry = event => {
@@ -10,21 +9,20 @@ class Create extends Component {
         this.setState({newEntry: event.target.value});
     }
 
-    onTrigger = (event) => {
+    clearEntry = () => {
         console.log(this.state.newEntry);
-        this.props.parentCallback(this.state.newEntry);
-        }
-
-    cancelEntry = () => {
-        this.props.parentCallback("");
+        this.setState({newEntry: ""});
+        console.log(this.state.newEntry);
     }
 
+    sendUp = () => {
+        this.props.target(this.state.newEntry);
+    }
+    
     render() {
         return (
             <div>
-                <h1>Create a note here</h1>
-                <hr />
-                <form onSubmit={this.onTrigger}>
+                <form onSubmit={this.sendUp}>
                     <label>
                         <textarea rows={7} cols={90} value={this.state.newEntry} onChange={this.updateNewEntry}>
                         Enter your note here
@@ -33,14 +31,14 @@ class Create extends Component {
                     <div>
                         <input type="submit" value="Submit" />
                         <div style={{display: 'inline-block'}}>
-                            <button onClick={this.cancelEntry}>Cancel</button>
+                            <button onClick={this.clearEntry}>Clear</button>
+                            <button onClick={this.props.cancel}>Cancel</button>
                         </div>
                     </div>
-                </form>
-                
+                </form>                
             </div>
         )
     }
 }
 
-export default Create;
+export default EntryBox;
