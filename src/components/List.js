@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import {v4 as uuidv4} from 'uuid';
 import { Link } from 'react-router-dom';
+import { Alert } from 'react-alert'
 import Create from './Create';
 
 class List extends Component {
-    state = { entries: [], isCreate: false};
+    state = { entries: [], isCreate: false, deleteId: null};
 
     Mkjsx = props => {
         //console.log(props);
-        const {text, timeCreation, timeDue} = props.entry;
-        return (<div className="listEntry">{text} was posted at {timeCreation}. It's due at {timeDue}</div>);
+        const {text, timeCreation, timeDue, id} = props.entry;
+        return (<div className="listEntry">
+            {text} was posted at {timeCreation}. It's due at {timeDue} 
+            <button style={{backgroundColor: "red", color: "white"}} onClick={this.setState({deleteId: props.id})}>Delete </button>
+            </div>);
     }
 
     toggleIsCreate = () => {
@@ -28,7 +32,7 @@ class List extends Component {
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var wholeTime = date + time;
         const oldValues = this.state.entries;
-        oldValues.push({text: data, timeCreation: wholeTime, timeDue: "5:15"});
+        oldValues.push({text: data, timeCreation: wholeTime, timeDue: "5:15", id: id});
         this.setState({entries: oldValues});
         this.toggleIsCreate();
     }
@@ -44,7 +48,7 @@ class List extends Component {
                 <h1>Welcome to your to-do list!</h1>
                 <hr/>
                  <div className="listBox">
-                    {(this.state.entries).map(entry => (<this.Mkjsx entry={entry}/>))}
+                    {(this.state.entries).map(entry => (<this.Mkjsx entry={entry} key={entry.id}/>))}
                     <button onClick={this.toggleIsCreate}>Create a new task</button>
                     </div>
                     </div>) }

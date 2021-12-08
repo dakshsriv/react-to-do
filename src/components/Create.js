@@ -10,37 +10,41 @@ const Create = props => {
         setNewEntry({newEntry: event.target.value});
     }
 
-    const onTrigger = (event) => {
+    const submitEntry = (event) => {
+        event.preventDefault();
         console.log(newEntry.newEntry);
         props.parentCallback(newEntry.newEntry);
         }
 
-    const clearEntry = () => {
-        console.log(newEntry);
-        console.log("Clearing");
-        console.log(newEntry);
-        setNewEntry("");
+    const clearEntry = (event) => {
+        event.preventDefault();
+        console.log("Before", newEntry);
+        setNewEntry({newEntry: ""});
     }
 
-    const cancelEntry = () => {
+    const cancelEntry = (event) => {
+        event.preventDefault();
         props.parentCallback("");
+    }
+
+    const clearEntryBox = () => {
+        console.log("function reached")
+        document.getElementById('createEntryTextbox').value = '';
     }
 
     return (
         <div>
             <h1>Create a note here</h1>
             <hr />
-            <form onSubmit={onTrigger} onReset={clearEntry}>
+            <form onSubmit={submitEntry} onReset={clearEntry}>
                 <label>
-                    <textarea rows={7} cols={90}  onChange={updateNewEntry}>
-                    Enter your note here
-                    </textarea>
+                    <textarea rows={7} cols={90} id="createEntryTextbox" value={newEntry.newEntry} placeholder="Enter your note here" onChange={updateNewEntry}/>
                 </label>
                 <div>
                     <input type="submit" value="Submit" />
                     <div style={{display: 'inline-block'}}>
-                    <input type="reset" value="Clear"/>
-                    <button onClick={cancelEntry}>Cancel</button>
+                    <button type="clear" onClick={clearEntry}>Clear</button>
+                    <button type="cancel" onClick={cancelEntry}>Cancel</button>
                     </div>
                 </div>
             </form>
