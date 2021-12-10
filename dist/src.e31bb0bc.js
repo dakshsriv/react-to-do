@@ -38071,8 +38071,6 @@ var Create = function Create(props) {
       setNewEntry = _useState2[1];
 
   var updateNewEntry = function updateNewEntry(event) {
-    console.log("updateNewEntry has been triggered");
-    console.log('event.target.value', event.target.value);
     setNewEntry({
       newEntry: event.target.value
     });
@@ -38080,13 +38078,11 @@ var Create = function Create(props) {
 
   var submitEntry = function submitEntry(event) {
     event.preventDefault();
-    console.log(newEntry.newEntry);
     props.parentCallback(newEntry.newEntry);
   };
 
   var clearEntry = function clearEntry(event) {
     event.preventDefault();
-    console.log("Before", newEntry);
     setNewEntry({
       newEntry: ""
     });
@@ -38097,14 +38093,8 @@ var Create = function Create(props) {
     props.parentCallback("");
   };
 
-  var clearEntryBox = function clearEntryBox() {
-    console.log("function reached");
-    document.getElementById('createEntryTextbox').value = '';
-  };
-
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Create a note here"), /*#__PURE__*/_react.default.createElement("hr", null), /*#__PURE__*/_react.default.createElement("form", {
-    onSubmit: submitEntry,
-    onReset: clearEntry
+    onSubmit: submitEntry
   }, /*#__PURE__*/_react.default.createElement("label", null, /*#__PURE__*/_react.default.createElement("textarea", {
     rows: 7,
     cols: 90,
@@ -38112,10 +38102,10 @@ var Create = function Create(props) {
     value: newEntry.newEntry,
     placeholder: "Enter your note here",
     onChange: updateNewEntry
-  })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
+  })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("button", {
     type: "submit",
-    value: "Submit"
-  }), /*#__PURE__*/_react.default.createElement("div", {
+    onClick: submitEntry
+  }, "Submit"), /*#__PURE__*/_react.default.createElement("div", {
     style: {
       display: 'inline-block'
     }
@@ -38201,7 +38191,7 @@ var List = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "Mkjsx", function (props) {
-      //console.log(props);
+      console.log("Mkjsx reached");
       var _props$entry = props.entry,
           text = _props$entry.text,
           timeCreation = _props$entry.timeCreation,
@@ -38214,9 +38204,9 @@ var List = /*#__PURE__*/function (_Component) {
           backgroundColor: "red",
           color: "white"
         },
-        onClick: _this.setState({
-          deleteId: props.id
-        })
+        onClick: function onClick() {
+          return _this.deleteEntry(id);
+        }
       }, "Delete "));
     });
 
@@ -38224,8 +38214,6 @@ var List = /*#__PURE__*/function (_Component) {
       _this.setState({
         isCreate: !_this.state.isCreate
       });
-
-      console.log(_this.state.isCreate);
     });
 
     _defineProperty(_assertThisInitialized(_this), "addEntryToState", function (data) {
@@ -38255,6 +38243,29 @@ var List = /*#__PURE__*/function (_Component) {
       _this.toggleIsCreate();
     });
 
+    _defineProperty(_assertThisInitialized(_this), "deleteEntry", function (id) {
+      var filteredArray = _this.state.entries.filter(function (item) {
+        return item.id !== id;
+      });
+
+      console.log(filteredArray);
+
+      _this.setState({
+        entries: filteredArray
+      });
+      /*
+      var newEntries = this.state.entries;
+      for (var i = 0; i < this.state.entries.len; i++) {
+          listId = (this.state.entries[i]).id;
+          if (id == listId) {
+              newEntries.splice(i, 1);
+          }
+      }
+      this.setState({entries: newEntries});
+      */
+
+    });
+
     return _this;
   }
 
@@ -38263,8 +38274,9 @@ var List = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      // console.log(Checkbox)
+      console.log(this.state.entries); // console.log(Checkbox)
       // console.log((this.state.entries).map(entry => {this.mkJSX(entry)}))
+
       return /*#__PURE__*/_react.default.createElement("div", null, this.state.isCreate ? /*#__PURE__*/_react.default.createElement(_Create.default, {
         parentCallback: this.addEntryToState
       }) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Welcome to your to-do list!"), /*#__PURE__*/_react.default.createElement("hr", null), /*#__PURE__*/_react.default.createElement("div", {
@@ -39023,7 +39035,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39979" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43167" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
