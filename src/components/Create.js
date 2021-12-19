@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const Create = props => {
     const [newEntry, setNewEntry] = useState("");
+    const [isPending, setIsPending] = useState(false);
 
     const updateNewEntry = event => {
         setNewEntry({newEntry: event.target.value});
@@ -10,6 +10,7 @@ const Create = props => {
 
     const submitEntry = (event) => {
         event.preventDefault();
+        setIsPending(true);
         props.parentCallback(newEntry.newEntry);
         }
 
@@ -32,10 +33,11 @@ const Create = props => {
                     <textarea rows={7} cols={90} id="createEntryTextbox" value={newEntry.newEntry} placeholder="Enter your note here" onChange={updateNewEntry}/>
                 </label>
                 <div>
-                    <button type="submit" onClick={submitEntry}>Submit</button>                    
+                    {isPending ? <button disabled="true" type="submit" onClick={submitEntry}>Submitting</button>   : <button type="submit" onClick={submitEntry}>Submit</button>   }
+                                     
                     <div style={{display: 'inline-block'}}>
-                    <button type="clear" onClick={clearEntry}>Clear</button>
-                    <button type="cancel" onClick={cancelEntry}>Cancel</button>
+                        {isPending ? <button disabled="true" type="clear" onClick={clearEntry}>Clear</button> : <button type="clear" onClick={clearEntry}>Clear</button>}
+                        {isPending ? <button disabled="true" type="cancel" onClick={cancelEntry}>Cancel</button>: <button type="cancel" onClick={cancelEntry}>Cancel</button>}
                     </div>
                 </div>
             </form>
