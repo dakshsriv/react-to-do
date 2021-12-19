@@ -16,6 +16,15 @@ class List extends Component {
             </div>);
     }
 
+    componentDidMount() {
+        // Simple GET request using fetch
+        fetch("http://localhost:8000", {method: "GET"})
+            .then(response => response.json)
+            .then(data => this.setState({ entries: data }));
+        console.log(this.state.entries)
+    }
+
+    
     toggleIsCreate = () => {
         this.setState({isCreate : !this.state.isCreate});
     }
