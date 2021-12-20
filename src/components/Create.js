@@ -33,11 +33,11 @@ const Create = props => {
                     <textarea rows={7} cols={90} id="createEntryTextbox" value={newEntry.newEntry} placeholder="Enter your note here" onChange={updateNewEntry}/>
                 </label>
                 <div>
-                    {isPending ? <button disabled="true" type="submit" onClick={submitEntry}>Submitting</button>   : <button type="submit" onClick={submitEntry}>Submit</button>   }
+                    {isPending ? <button disabled={true} type="submit" onClick={submitEntry}>Submitting</button>   : <button type="submit" onClick={submitEntry}>Submit</button>   }
                                      
                     <div style={{display: 'inline-block'}}>
-                        {isPending ? <button disabled="true" type="clear" onClick={clearEntry}>Clear</button> : <button type="clear" onClick={clearEntry}>Clear</button>}
-                        {isPending ? <button disabled="true" type="cancel" onClick={cancelEntry}>Cancel</button>: <button type="cancel" onClick={cancelEntry}>Cancel</button>}
+                        {isPending ? <button disabled={true} type="clear" onClick={clearEntry}>Clear</button> : <button type="clear" onClick={clearEntry}>Clear</button>}
+                        {isPending ? <button disabled={true} type="cancel" onClick={cancelEntry}>Cancel</button>: <button type="cancel" onClick={cancelEntry}>Cancel</button>}
                     </div>
                 </div>
             </form>

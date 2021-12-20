@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 import json
+from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 origins = [
     "http://localhost:1234",
@@ -15,6 +17,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+class Data(BaseModel):
+    text: str
+    timeDue: str
 
 @app.get("/")
 async def list():
@@ -40,8 +46,9 @@ async def list():
         ]
 
 @app.post("/")
-async def create(entry, time):
-    return {"id": 1}
+async def create(text: Data, timeDue: Data):
+    my_datetime=datetime.now()
+    return {"id": 2, "text": text, "timeCreation": my_datetime.isoformat(), "timeDue": timeDue}
 
 @app.put("/")
 async def update(tid, entry, time):

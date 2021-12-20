@@ -8,28 +8,52 @@ class List extends Component {
     state = { entries: [], isCreate: false, deleteId: null};
 
     Mkjsx = props => {
-        console.log("Mkjsx reached");
         const {text, timeCreation, timeDue, id} = props.entry;
         return (<div className="listEntry">
             {text} was posted at {timeCreation}. It's due at {timeDue} 
-            <button style={{backgroundColor: "red", color: "white"}} onClick={() => this.deleteEntry(id)}>Delete </button>
+            <button style={{backgroundColor: "red", color: "white"}} onClick={() => this.deleteEntry(id)}>Delete</button>
             </div>);
     }
 
     componentDidMount() {
         // Simple GET request using fetch
-        fetch("http://localhost:8000", {method: "GET"})
-            .then(response => response.json)
-            .then(data => this.setState({ entries: data }));
-        console.log(this.state.entries)
+       this.fetchAndSync();
+        //console.log(this.state.entries)
     }
 
+    fetchAndSync = () => {
+        fetch("http://localhost:8000/")
+        .then(response => {  if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Something went wrong');
+          }
+        })
+        .then(data => this.setState({entries: data}))
+        .catch((error) => {console.log(error)});
+    }
     
     toggleIsCreate = () => {
         this.setState({isCreate : !this.state.isCreate});
     }
 
     addEntryToState = (data) => {
+        console.log("addEntryToState was called")
+        fetch('http://localhost:8000/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: data,
+                timeDue: '2021-12-19T14:34:32+00:00'}
+
+            )});
+        }
+
+        
+        /*
             if (data == "") {
             this.toggleIsCreate();
             return(0);
@@ -42,12 +66,11 @@ class List extends Component {
         const oldValues = this.state.entries;
         oldValues.push({text: data, timeCreation: wholeTime, timeDue: "5:15", id: id});
         this.setState({entries: oldValues});
-        this.toggleIsCreate();
+        this.toggleIsCreate(); */
     }
 
     deleteEntry = id => {
         let filteredArray = this.state.entries.filter(item => item.id !== id);
-        console.log(filteredArray)
         this.setState({entries: filteredArray});
 
         /*
@@ -63,8 +86,9 @@ class List extends Component {
     }
 
     render() {
-        console.log(this.state.entries);
-        // console.log(Checkbox)
+        // console.log(this.state.entries);
+
+       // console.log(Checkbox)
         // console.log((this.state.entries).map(entry => {this.mkJSX(entry)}))
         return (
             <div>
@@ -80,8 +104,9 @@ class List extends Component {
                     </div>
                     </div>) }
             </div>
-        )
-    }
-};
+        );
+    };
+}
+
 
 export default List;
