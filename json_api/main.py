@@ -22,6 +22,7 @@ class Data(BaseModel):
     text: str
     timeDue: str
 
+
 @app.get("/")
 async def list():
         return [ # List of entries
@@ -46,7 +47,7 @@ async def list():
         ]
 
 @app.post("/")
-async def create(text: Data, timeDue: Data):
+async def create(text, timeDue):
     my_datetime=datetime.now()
     return {"id": 2, "text": text, "timeCreation": my_datetime.isoformat(), "timeDue": timeDue}
 

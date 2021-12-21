@@ -38,19 +38,22 @@ class List extends Component {
     }
 
     addEntryToState = (data) => {
-        console.log("addEntryToState was called")
-        fetch('http://localhost:8000/', {
+        console.log("This is the datasent:", JSON.stringify({
+            "text": data,
+            "timeDue": '2021-12-19T14:34:32+00:00'}
+        ))
+        fetch('http://localhost:8000', {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                text: data,
-                timeDue: '2021-12-19T14:34:32+00:00'}
-
-            )});
+                "text": data,
+                "timeDue": '2021-12-19T14:34:32+00:00'}
+            ) })
+            
         }
+        
 
         
         /*
@@ -67,7 +70,7 @@ class List extends Component {
         oldValues.push({text: data, timeCreation: wholeTime, timeDue: "5:15", id: id});
         this.setState({entries: oldValues});
         this.toggleIsCreate(); */
-    }
+
 
     deleteEntry = id => {
         let filteredArray = this.state.entries.filter(item => item.id !== id);
@@ -104,9 +107,9 @@ class List extends Component {
                     </div>
                     </div>) }
             </div>
-        );
-    };
-}
+        )
+    }
+    }   
 
 
 export default List;
