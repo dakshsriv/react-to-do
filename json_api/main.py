@@ -1,8 +1,13 @@
 from fastapi import FastAPI
+from fastapi import APIRouter, Body, Request, HTTPException, status
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
+
 import json
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from pprint import pprint
 
 origins = [
     "http://localhost:1234",
@@ -46,7 +51,7 @@ async def list():
             },
         ]
 
-@app.post("/")
+#@app.post("/")
 async def create(text, timeDue):
     my_datetime=datetime.now()
     return {"id": 2, "text": text, "timeCreation": my_datetime.isoformat(), "timeDue": timeDue}
@@ -58,4 +63,14 @@ async def update(tid, entry, time):
 @app.delete("/")
 async def delete(tid):
     return {"message": "Hello World"}
+
+@app.post("/", response_description="Add new task")
+async def create2(request: Request):
+    #task = jsonable_encoder(task)
+    pprint(request)
+    #pprint(task)
+    return JSONResponse(
+            status_code=status.HTTP_201_CREATED, 
+            content={"post-status": "Success", "id": "10"}
+            )
 

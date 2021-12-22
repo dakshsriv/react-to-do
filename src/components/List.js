@@ -38,11 +38,24 @@ class List extends Component {
     }
 
     addEntryToState = (data) => {
-        console.log("This is the datasent:", JSON.stringify({
-            "text": data,
-            "timeDue": '2021-12-19T14:34:32+00:00'}
-        ))
-        fetch('http://localhost:8000', {
+        const requestOptions = {
+            method: 'POST',
+            mode: 'no-cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: { 'Accept': 'application/json',
+                'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: 'React POST Request Example', timeDue: 'timeDue' })
+        };
+
+        fetch('http://localhost:8000', requestOptions)
+            .then(response => response.json())
+            //.then(data => this.setState({ postId: data.id }))
+            .then((data) => console.log(response))
+            .catch((error) => { console.log(error.response); });
+
+        this.toggleIsCreate();
+        /* fetch('http://localhost:8000', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,8 +63,8 @@ class List extends Component {
             body: JSON.stringify({
                 "text": data,
                 "timeDue": '2021-12-19T14:34:32+00:00'}
-            ) })
-            
+            ) }) */
+
         }
         
 
