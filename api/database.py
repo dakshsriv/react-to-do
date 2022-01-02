@@ -8,8 +8,8 @@ client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')
 database = client.TodoList
 collection = database.todo
 
-async def fetch_one_todo(title):
-    document = await collection.find_one({"title": title})
+async def fetch_one_todo(eid):
+    document = await collection.find_one({"eid": eid})
     return document
 
 async def fetch_all_todos():
@@ -25,11 +25,11 @@ async def create_todo(todo):
     return document
 
 
-async def update_todo(title, desc):
-    await collection.update_one({"title": title}, {"$set": {"description": desc}})
-    document = await collection.find_one({"title": title})
+async def update_todo(eid,title, desc):
+    await collection.update_one({"eid": eid}, {"$set": {"title": title, "description": desc}})
+    document = await collection.find_one({"eid": eid})
     return document
 
-async def remove_todo(title):
-    await collection.delete_one({"title": title})
+async def remove_todo(eid):
+    await collection.delete_one({"eid": eid})
     return True

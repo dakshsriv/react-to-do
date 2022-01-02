@@ -55,13 +55,12 @@ async def read_root():
 
 @app.get("/api/todo")
 async def get_todo(response: Response):
-    response.headers["X-Cat-Dog"] = "alone in the world"
     response = await fetch_all_todos()
     fastapi_logger.debug("Sending response:")
     fastapi_logger.debug( pformat(response))
     return response
 
-@app.get("/api/todo/{title}", response_model=Todo)
+@app.get("/api/todo/{eid}", response_model=Todo)
 async def get_todo_by_title(title):
     response = await fetch_one_todo(title)
     if response:
@@ -75,16 +74,16 @@ async def post_todo(todo: Todo):
         return response
     raise HTTPException(400, "Something went wrong")
 
-@app.put("/api/todo/{title}/", response_model=Todo)
-async def put_todo(title: str, desc: str):
-    response = await update_todo(title, desc)
+@app.put("/api/todo/{eid}/", response_model=Todo)
+async def put_todo(eid: str, title: str, desc: str):
+    response = await update_todo(eid, title, desc)
     if response:
         return response
-    raise HTTPException(404, f"There is no todo with the title {title}")
+    raise HTTPException(404, f"There is no todo with the eid {eid}")
 
-@app.delete("/api/todo/{title}")
-async def delete_todo(title):
-    response = await remove_todo(title)
+@app.delete("/api/todo/{eid}/", status_code=204)
+async def delete_todo(eid: str) -> None:
+    response = await remove_todo(eid)
     if response:
         return "Successfully deleted todo"
-    raise HTTPException(404, f"There is no todo with the title {title}")
+    raise HTTPException(404, f"There is no todo with the id {eid}")

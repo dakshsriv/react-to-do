@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Create from './Create';
+import uuid from 'react-uuid';
 
 class List extends Component {
-    state = { entries: [["1", "2"]], isCreate: false, deleteTitle: null};
+    state = { entries: [], isCreate: false, deleteTitle: null};
 
     Mkjsx = props => {
-        const title = props.title
-        const text = props.text
+        const eid = props.entry.eid
+        const title = props.entry.title
+        const text = props.entry.description
         return (<div className="listEntry">
-            {text} with title {title}
-            <button style={{backgroundColor: "red", color: "white"}} onClick={() => this.deleteEntry(title)}>Delete</button>
+            {eid}. <b>{title}</b>: {text} 
+            <button onClick={() => this.deleteEntry(eid)}>Delete</button>
             </div>);
     }
 
@@ -19,9 +21,14 @@ class List extends Component {
         this.fetchAndSync();
     }
 
+    componentDidCatch(error, info) {
+        // Display fallback UI
+      }
+    
     fetchAndSync = () => {
         axios.get('http://localhost:8000/api/todo', { mode: 'cors'})
             .then(res => { this.setState({entries: res.data});
+        console.log("Fetch response is: ", this.state.entries)
             })
     }
     
@@ -31,28 +38,33 @@ class List extends Component {
 
     addEntryToState = (data) => {
         //console.log(data)
-        console.log("Received text is: ", data.text);
-        console.log("Received title is: ", data.title);
-        const preentry = {text: data.text, title: data.title}
-        const preentry_mod1 = Object.entries(preentry);
-        // Text then title
-        const preentry_mod2 = [preentry_mod1[0][1], preentry_mod1[1][1]]
-        console.log(preentry_mod2)
+        const preentry = {title: data.title, description: data.text}
+        console.log(preentry)
         const entries_copy = this.state.entries
         entries_copy.push(preentry)
         this.setState({entries: entries_copy})
+        console.log(this.state.entries)
+        axios.post('http://localhost:8000/api/todo/', {
+            eid: uuid(), title: data.title, description: data.text
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         this.toggleIsCreate();
         }
         
-    deleteEntry = title => {
-        let filteredArray = this.state.entries.filter(item => item.title !== title);
+    deleteEntry = eid => {
+        let filteredArray = this.state.entries.filter(item => item.eid !== eid);
         this.setState({entries: filteredArray});
+        axios.delete("http://localhost:8000/api/todo/", {eid}).then(res => {console.log(res.data)})
 
     }
 
     render() {
 
-       console.log(Object.entries(this.state.entries))
         return (
             <div>
                 {this.state.isCreate ? (<Create parentCallback = {this.addEntryToState}/>)
@@ -61,7 +73,7 @@ class List extends Component {
                 <h1>Welcome to your to-do list!</h1>
                 <hr/>
                  <div className="listBox">
-                    {(Object.entries(this.state.entries)).map((text, title) => (<this.Mkjsx text={text} title={title}/>))}
+                    {this.state.entries.map(entry => (<this.Mkjsx entry={entry} key={entry.eid}/>))}
                     <button onClick={this.toggleIsCreate}>Create a new task</button>
                     </div>
                     </div>) }

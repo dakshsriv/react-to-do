@@ -5,5 +5,6 @@
 from pydantic import BaseModel
 
 class Todo(BaseModel):
+    eid: str
     title: str
     description: str
