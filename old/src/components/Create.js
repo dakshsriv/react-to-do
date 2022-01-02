@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-function Create(props) {
+const Create = props => {
     const [newEntry, setNewEntry] = useState("");
     const [newTitle, setNewTitle] = useState("");
     const [isPending, setIsPending] = useState(false);
-
 
     const updateNewEntry = event => {
         setNewEntry({newEntry: event.target.value});
@@ -14,10 +13,10 @@ function Create(props) {
         setNewTitle({newTitle: event.target.value});
     }
 
-    const submit = (event) => {
+    const submitEntry = (event) => {
         event.preventDefault();
         setIsPending(true);
-        props.parentCallback({title : newTitle.newTitle, text: newEntry.newEntry});
+        props.parentCallback(newEntry.newEntry);
         }
 
     const clearEntry = (event) => {
@@ -34,15 +33,15 @@ function Create(props) {
         <div>
             <h1>Create a note here</h1>
             <hr />
-            <form onSubmit={submit}>
-                    <textarea style={{"fontSize":"36px", "marginBottom":"5px"}} rows={1} cols={49} 
-                    maxLength={49}
-                    id="createTitleTextbox" value={newTitle.newTitle} placeholder="Enter your title here" onChange={updateNewTitle}/>
-
-                    <textarea  rows={7} cols={90}
-                    maxLength={630} id="createEntryTextbox" value={newEntry.newEntry} placeholder="Enter your note here" onChange={updateNewEntry}/>
+            <form onSubmit={submitEntry}>
+                <label>
+                    <textarea rows={1} cols={90} id="createTitleTextbox" value={newEntry.newEntry} placeholder="Enter your title here" onChange={updateNewTitle}/>
+                </label>
+                <label>
+                    <textarea rows={7} cols={90} id="createEntryTextbox" value={newTitle.newTitle} placeholder="Enter your note here" onChange={updateNewEntry}/>
+                </label>
                 <div>
-                    {isPending ? <button disabled={true} type="submit" onClick={submit}>Submitting</button>   : <button type="submit" onClick={submit}>Submit</button>   }
+                    {isPending ? <button disabled={true} type="submit" onClick={submitEntry}>Submitting</button>   : <button type="submit" onClick={submitEntry}>Submit</button>   }
                                      
                     <div style={{display: 'inline-block'}}>
                         {isPending ? <button disabled={true} type="clear" onClick={clearEntry}>Clear</button> : <button type="clear" onClick={clearEntry}>Clear</button>}
