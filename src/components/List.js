@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Create from './Create';
+import Update from './Update';
 import uuid from 'react-uuid';
 
 class List extends Component {
-    state = { entries: [], isCreate: false, deleteTitle: null};
+    state = { entries: [], isCreate: false, isUpdate: false, deleteTitle: null};
 
     Mkjsx = props => {
         const eid = props.entry.eid
@@ -12,6 +13,7 @@ class List extends Component {
         const text = props.entry.description
         return (<div className="listEntry">
             {eid}. <b>{title}</b>: {text} 
+            <button onClick={() => this.toggleIsUpdate(eid)}>Update</button>
             <button onClick={() => this.deleteEntry(eid)}>Delete</button>
             </div>);
     }
@@ -34,6 +36,10 @@ class List extends Component {
     
     toggleIsCreate = () => {
         this.setState({isCreate : !this.state.isCreate});
+    }
+
+    toggleIsUpdate = () => {
+        this.setState({isUpdate : !this.state.isUpdate});
     }
 
     addEntryToState = (data) => {
