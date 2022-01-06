@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function Update(props) {
-    const [newEntry, setNewEntry] = useState("");
-    const [newTitle, setNewTitle] = useState("");
+    const [newText, setnewText] = useState("");
+    const [newTitle, setnewTitle] = useState("");
     const [isPending, setIsPending] = useState(false);
+    const [entry, setEntry] = useState({})
 
 
-    const updateNewEntry = event => {
-        setNewEntry({newEntry: event.target.value});
+
+    const updateNewText = event => {
+        setnewText({newText: event.target.value});
     }
 
     const updateNewTitle = event => {
-        setNewTitle({newTitle: event.target.value});
+        setnewTitle({newTitle: event.target.value});
     }
 
     const submit = (event) => {
         event.preventDefault();
         setIsPending(true);
-        props.parentCallback({title : newTitle.newTitle, text: newEntry.newEntry});
+        props.parentCallback({title : newTitle.newTitle, text: newText.newText});
         }
 
     const clearEntry = (event) => {
         event.preventDefault();
-        setNewEntry({newEntry: ""});
+        setnewText({newText: ""});
     }
 
     const cancelEntry = (event) => {
@@ -37,10 +40,10 @@ function Update(props) {
             <form onSubmit={submit}>
                     <textarea style={{"fontSize":"36px", "marginBottom":"5px"}} rows={1} cols={49} 
                     maxLength={49}
-                    id="updateTitleTextbox" value={newTitle.newTitle} defaultValue={props.entry.title} onChange={updateNewTitle}/>
+                    id="updateTitleTextbox" value={newTitle.newTitle} defaultValue={entry.title} onChange={updateNewTitle}/>
 
                     <textarea  rows={7} cols={90}
-                    maxLength={630} id="updateEntryTextbox" value={newEntry.newEntry} defaultValue={props.entry.description} onChange={updateNewEntry}/>
+                    maxLength={630} id="updateEntryTextbox" value={newText.newText} defaultValue={entry.description} onChange={updateNewText}/>
                 <div>
                     {isPending ? <button disabled={true} type="submit" onClick={submit}>Submitting</button>   : <button type="submit" onClick={submit}>Submit</button>   }
                                      

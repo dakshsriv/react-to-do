@@ -7,27 +7,18 @@ import uuid from 'react-uuid';
 class List extends Component {
     state = { entries: [], isCreate: false, isUpdate: false, deleteTitle: null};
 
-    Mkjsx = (props) => {
+    JSX = (props) => {
         const eid = props.entry.eid
         const title = props.entry.title
         const text = props.entry.description
         return (<div className="listEntry">
             Title: <b>{title}</b> Text: {text}   
-            <button onClick={() => this.toggleIsUpdate(eid)}>Update</button>
-            <button onClick={() => this.deleteEntry(eid)}>Delete</button>
+            <button onClick={() => this.setUpdateID(eid)}>Update</button>
+            <button onClick={() => this.deleteHandler(eid)}>Delete</button>
             </div>);
     }
 
-    componentDidMount() {
-        console.log("List component mounted")
-        this.fetchAndSync();
-    }
-
-    componentDidCatch(error, info) {
-        // Display fallback UI
-      }
-    
-    fetchAndSync = () => {
+    getAllEntries = () => {
         axios.get('http://localhost:8000/api/todo', { mode: 'cors'})
             .then(res => { this.setState({entries: res.data});
         console.log("Fetch response is: ", this.state.entries)
@@ -38,17 +29,11 @@ class List extends Component {
         this.setState({isCreate : !this.state.isCreate});
     }
 
-    toggleIsUpdate = () => {
-        this.setState({isUpdate : !this.state.isUpdate});
+    setUpdateID = () => {
+        this.setState({isUpdate : !this.state.updateID});
     }
 
-    addEntryToState = (data) => {
-        //console.log(data)
-        const preentry = {title: data.title, description: data.text}
-        console.log(preentry)
-        const entries_copy = this.state.entries
-        entries_copy.push(preentry)
-        this.setState({entries: entries_copy})
+    createHandler = (data) => {
         console.log(this.state.entries)
         axios.post('http://localhost:8000/api/todo/', {
             eid: uuid(), title: data.title, description: data.text
@@ -62,7 +47,7 @@ class List extends Component {
         this.toggleIsCreate();
         }
         
-    deleteEntry = eid => {
+    deleteHandler = eid => {
         let filteredArray = this.state.entries.filter(item => item.eid !== eid);
         this.setState({entries: filteredArray});
         const targetAddr = "http://localhost:8000/api/todo/" + eid;
@@ -85,23 +70,39 @@ class List extends Component {
 
     }
 
+    renderAid = () => {
+        if (this.state.updateID != "") return (<Update parentCallback = {this.updateEntry} eid={this.state.updateID}/>);
+        if (this.state.isCreate) {
+           return (<Create parentCallback = {this.createHandler}/>);
+        }
+        return (<div>
+            <h1>Welcome to your to-do list!</h1>
+            <hr/>
+             <div className="listBox">
+                {this.state.entries.map(entry => (<this.JSX entry={entry} key={entry.eid}/>))}
+                <button onClick={this.toggleIsCreate}>Create a new task</button>
+                </div>
+                </div>) };
+    
     render() {
-
-        return (
+        return(
+            <div><this.renderAid/></div>
+        )
+        /* return (
             <div>
-                {this.state.isCreate ? (<Create parentCallback = {this.addEntryToState}/>)
+                {this.state.isCreate ? (<Create parentCallback = {this.createHandler}/>)
                  : (
                 <div>
                 <h1>Welcome to your to-do list!</h1>
                 <hr/>
                  <div className="listBox">
-                    {this.state.entries.map(entry => (<this.Mkjsx entry={entry} key={entry.eid}/>))}
+                    {this.state.entries.map(entry => (<this.JSX entry={entry} key={entry.eid}/>))}
                     <button onClick={this.toggleIsCreate}>Create a new task</button>
                     </div>
                     </div>) }
             </div>
-        )
-    }
+        ) */
+    } 
     }   
 
 
