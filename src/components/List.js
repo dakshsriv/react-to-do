@@ -7,12 +7,12 @@ import uuid from 'react-uuid';
 class List extends Component {
     state = { entries: [], isCreate: false, isUpdate: false, deleteTitle: null};
 
-    Mkjsx = props => {
+    Mkjsx = (props) => {
         const eid = props.entry.eid
         const title = props.entry.title
         const text = props.entry.description
         return (<div className="listEntry">
-            {eid}. <b>{title}</b>: {text} 
+            Title: <b>{title}</b> Text: {text}   
             <button onClick={() => this.toggleIsUpdate(eid)}>Update</button>
             <button onClick={() => this.deleteEntry(eid)}>Delete</button>
             </div>);
@@ -65,7 +65,23 @@ class List extends Component {
     deleteEntry = eid => {
         let filteredArray = this.state.entries.filter(item => item.eid !== eid);
         this.setState({entries: filteredArray});
-        axios.delete("http://localhost:8000/api/todo/", {eid}).then(res => {console.log(res.data)})
+        const targetAddr = "http://localhost:8000/api/todo/" + eid;
+        console.log(targetAddr)
+        //axios.delete(targetAddr, {headers: {'accept': '*/*'} }).then(res => {console.log(res.data)})
+        const options = {
+            method: 'DELETE',
+            headers : {      
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+        
+        axios.delete(targetAddr)
+            .then(res => console.log(res.data))
+        /* fetch(targetAddr, options)
+            .then((res) => console.log(res.json(), "res"))
+            .then((data) => console.log(data, "data"))
+            .catch((err) => console.log(err, "err")); */
 
     }
 

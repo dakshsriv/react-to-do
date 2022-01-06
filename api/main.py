@@ -81,8 +81,8 @@ async def put_todo(eid: str, title: str, desc: str):
         return response
     raise HTTPException(404, f"There is no todo with the eid {eid}")
 
-@app.delete("/api/todo/{eid}/", status_code=204)
-async def delete_todo(eid: str) -> None:
+@app.delete("/api/todo/{eid}")
+async def delete_todo(eid):
     response = await remove_todo(eid)
     if response:
         return "Successfully deleted todo"
