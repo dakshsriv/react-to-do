@@ -5,7 +5,9 @@ import Update from './Update';
 import uuid from 'react-uuid';
 
 class List extends Component {
-    state = { entries: [], isCreate: false, isUpdate: false, deleteTitle: null};
+    state = { entries: [], isCreate: false, updateID: false, deleteTitle: null};
+
+
 
     JSX = (props) => {
         const eid = props.entry.eid
@@ -22,28 +24,30 @@ class List extends Component {
         axios.get('http://localhost:8000/api/todo', { mode: 'cors'})
             .then(res => { this.setState({entries: res.data});
         console.log("Fetch response is: ", this.state.entries)
-            })
+        console.log(this.state.entries)
+                })
     }
     
     toggleIsCreate = () => {
         this.setState({isCreate : !this.state.isCreate});
     }
 
-    setUpdateID = () => {
-        this.setState({isUpdate : !this.state.updateID});
+    setUpdateID = (id) => {
+        this.setState({updateID : id});
     }
 
     createHandler = (data) => {
-        console.log(this.state.entries)
+        
         axios.post('http://localhost:8000/api/todo/', {
             eid: uuid(), title: data.title, description: data.text
           })
           .then(function (response) {
-            console.log(response);
-          })
+              console.log("response is", response.data)
+       })
           .catch(function (error) {
             console.log(error);
           });
+        
         this.toggleIsCreate();
         }
         
@@ -71,7 +75,8 @@ class List extends Component {
     }
 
     renderAid = () => {
-        if (this.state.updateID != "") return (<Update parentCallback = {this.updateEntry} eid={this.state.updateID}/>);
+        if (this.state.updateID != "") {
+        return (<Update parentCallback = {this.updateEntry} eid={this.state.updateID}/>); }
         if (this.state.isCreate) {
            return (<Create parentCallback = {this.createHandler}/>);
         }
@@ -85,6 +90,9 @@ class List extends Component {
                 </div>) };
     
     render() {
+        this.getAllEntries()
+        console.log(null)
+        console.log(this.state.entries)
         return(
             <div><this.renderAid/></div>
         )
